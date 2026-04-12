@@ -1,0 +1,537 @@
+/* src/components/ExerciseCard.css */
+
+/* Exercise Card Styles */
+.exercise-card {
+  background: rgba(30, 34, 48, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.exercise-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+.exercise-card.completed {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exercise-info {
+  flex: 1;
+}
+
+.exercise-name {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e4e6eb;
+  line-height: 1.3;
+}
+
+.exercise-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-badge {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit {
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #a78bfa;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-edit:hover {
+  background: rgba(139, 92, 246, 0.4);
+  transform: scale(1.05);
+}
+
+.btn-media-view {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-media-view:hover {
+  background: rgba(59, 130, 246, 0.4);
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: scale(1.05);
+}
+
+/* Exercise Media */
+.exercise-media {
+  margin: 16px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  animation: fadeIn 0.3s ease;
+}
+
+.media-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+.exercise-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.exercise-image:hover {
+  transform: scale(1.02);
+}
+
+.exercise-video {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  background: #000;
+}
+
+.exercise-iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-radius: 8px;
+}
+
+/* Sets Container */
+.sets-container {
+  margin: 16px 0;
+}
+
+.sets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+  gap: 10px;
+}
+
+.set-btn {
+  padding: 10px 8px;
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: #e4e6eb;
+  text-align: center;
+}
+
+.set-btn:hover {
+  transform: scale(1.05);
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.set-btn.completed {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+  color: white;
+  cursor: pointer;
+}
+
+.set-btn.completed:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+}
+
+/* Completed Badge */
+.completed-badge {
+  margin-top: 12px;
+  padding: 8px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 10px;
+  text-align: center;
+  animation: slideUp 0.4s ease;
+}
+
+.completed-badge span {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Edit Mode Styles */
+.exercise-card.edit-mode {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: #a78bfa;
+  cursor: default;
+}
+
+.exercise-card.edit-mode:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.edit-exercise-form {
+  padding: 0;
+}
+
+.edit-form-group {
+  margin-bottom: 14px;
+}
+
+.edit-form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.edit-form-group input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #e4e6eb;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.edit-form-group input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.edit-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.edit-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-save-edit {
+  flex: 1;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.btn-save-edit:hover {
+  background: rgba(34, 197, 94, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-cancel-edit {
+  flex: 1;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.btn-cancel-edit:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .exercise-card {
+    padding: 16px;
+  }
+
+  .exercise-name {
+    font-size: 16px;
+  }
+
+  .meta-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 8px;
+  }
+
+  .set-btn {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .btn-media-view {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .exercise-image {
+    max-height: 150px;
+  }
+
+  .exercise-video,
+  .exercise-iframe {
+    max-height: 150px;
+  }
+
+  .edit-form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .edit-form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-save-edit,
+  .btn-cancel-edit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-card {
+    padding: 14px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .card-actions {
+    justify-content: flex-end;
+  }
+
+  .exercise-name {
+    font-size: 15px;
+  }
+
+  .sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+    gap: 6px;
+  }
+
+  .set-btn {
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+
+  .completed-badge span {
+    font-size: 11px;
+  }
+}
+
+/* Touch-friendly for TV */
+@media (min-width: 1024px) {
+  .exercise-card {
+    cursor: pointer;
+  }
+
+  .set-btn {
+    min-height: 50px;
+  }
+
+  .btn-edit,
+  .btn-delete,
+  .btn-media-view {
+    min-height: 36px;
+  }
+}
+
+/* Loading Skeleton Animation */
+@keyframes skeletonPulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.exercise-card.loading {
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+/* Hover effects for better UX */
+.exercise-card:active {
+  transform: scale(0.98);
+}
+
+.set-btn:active {
+  transform: scale(0.95);
+}
+
+/* Focus styles for accessibility */
+.btn-edit:focus,
+.btn-delete:focus,
+.btn-media-view:focus,
+.set-btn:focus {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+
+/* Добавьте в ExerciseCard.css */
+
+/* Для фото в карточке */
+.exercise-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.exercise-image:hover {
+  transform: scale(1.02);
+}
+
+.media-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}

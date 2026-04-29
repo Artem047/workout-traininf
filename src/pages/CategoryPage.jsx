@@ -1,19 +1,25 @@
 // src/pages/CategoryPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { initialWorkoutData } from "../data/workoutData";
+import { useUser } from "../context/UserContext";
 import "./CategoryPage.css";
 
-const CategoryPage = ({ refreshCalendar }) => {
+const CategoryPage = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
+  const { currentWorkoutData, updateWorkoutData } = useUser();
 
   const [exercises, setExercises] = useState([]);
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const foundCategory = initialWorkoutData.find(
+    if (!currentWorkoutData) {
+      navigate("/");
+      return;
+    }
+
+    const foundCategory = currentWorkoutData.find(
       (cat) => cat.id === categoryId,
     );
 
@@ -22,45 +28,22 @@ const CategoryPage = ({ refreshCalendar }) => {
       return;
     }
 
-    const saved = localStorage.getItem("workout-categories");
-    let savedCategory = null;
-
-    if (saved) {
-      const allSaved = JSON.parse(saved);
-      savedCategory = allSaved.find((cat) => cat.id === categoryId);
-    }
-
-    const exercisesWithProgress = foundCategory.exercises.map((exercise) => {
-      const savedExercise = savedCategory?.exercises.find(
-        (ex) => ex.id === exercise.id,
-      );
-      return savedExercise ? { ...exercise, ...savedExercise } : exercise;
-    });
-
     setCategory(foundCategory);
-    setExercises(exercisesWithProgress);
+    setExercises(foundCategory.exercises);
     setLoading(false);
-  }, [categoryId, navigate]);
+  }, [categoryId, navigate, currentWorkoutData]);
 
   const saveProgressToLocalStorage = (updatedExercises) => {
-    const saved = localStorage.getItem("workout-categories");
-    let allCategories = saved ? JSON.parse(saved) : [];
+    if (!currentWorkoutData) return;
 
-    if (allCategories.length === 0) {
-      allCategories = JSON.parse(JSON.stringify(initialWorkoutData));
-    }
-
-    const updatedCategories = allCategories.map((cat) => {
+    const updatedCategories = currentWorkoutData.map((cat) => {
       if (cat.id === categoryId) {
         return { ...cat, exercises: updatedExercises };
       }
       return cat;
     });
 
-    localStorage.setItem(
-      "workout-categories",
-      JSON.stringify(updatedCategories),
-    );
+    updateWorkoutData(updatedCategories);
   };
 
   const updateExercise = (updatedExercise) => {

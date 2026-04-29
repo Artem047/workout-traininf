@@ -1,0 +1,66 @@
+/* src/components/UserSelector.css */
+.user-selector {
+  background: rgba(30, 34, 48, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.user-selector-title {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.user-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  background: rgba(30, 34, 48, 0.6);
+}
+
+.user-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.user-btn.active {
+  border-width: 2px;
+}
+
+.user-icon {
+  font-size: 24px;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e4e6eb;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .user-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .user-btn {
+    justify-content: center;
+  }
+}

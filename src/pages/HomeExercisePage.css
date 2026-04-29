@@ -1,0 +1,532 @@
+/* src/pages/HomeExercisePage.css */
+
+.home-exercise-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Навигация */
+.home-exercise-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.home-exercise-nav .back-link {
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.home-exercise-nav .back-link:hover {
+  background: rgba(139, 92, 246, 0.3);
+  transform: translateX(-3px);
+}
+
+.home-exercise-nav h2 {
+  font-size: 22px;
+  color: #e4e6eb;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+/* Медиа контент */
+.home-exercise-media {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.media-toggle {
+  width: 100%;
+  background: rgba(139, 92, 246, 0.2);
+  border: none;
+  color: #a78bfa;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.media-toggle:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+.home-exercise-media img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+/* Статистика */
+.home-exercise-stats {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.home-stat {
+  background: rgba(30, 34, 48, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 12px 20px;
+  text-align: center;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e4e6eb;
+}
+
+.home-stat span {
+  font-size: 20px;
+}
+
+/* Сетка подходов */
+.home-exercise-sets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+}
+
+.home-exercise-set-btn {
+  background: rgba(30, 34, 48, 0.8);
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 15px 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e4e6eb;
+  text-align: center;
+}
+
+.home-exercise-set-btn:hover {
+  transform: translateY(-3px);
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.home-exercise-set-btn.completed {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+  color: white;
+}
+
+/* Кнопка сброса */
+.home-reset-btn {
+  width: 100%;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  padding: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.home-reset-btn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Сообщение о завершении */
+.home-complete-message {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  animation: celebrate 0.5s ease;
+}
+
+@keyframes celebrate {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #a78bfa;
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-exercise-page {
+    padding: 15px;
+    gap: 18px;
+  }
+
+  .home-exercise-nav {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .home-exercise-nav h2 {
+    font-size: 18px;
+  }
+
+  .home-stat {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .home-stat span {
+    font-size: 18px;
+  }
+
+  .home-exercise-sets {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 10px;
+  }
+
+  .home-exercise-set-btn {
+    padding: 12px 6px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-exercise-page {
+    padding: 12px;
+    gap: 15px;
+  }
+
+  .home-exercise-stats {
+    gap: 8px;
+  }
+
+  .home-stat {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .home-stat span {
+    font-size: 16px;
+  }
+
+  .home-exercise-sets {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
+  }
+
+  .home-exercise-set-btn {
+    padding: 10px 4px;
+    font-size: 13px;
+  }
+
+  .home-reset-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .home-complete-message {
+    font-size: 14px;
+    padding: 15px;
+  }
+}
+
+/* src/pages/HomeExercisePage.css - добавьте или обновите */
+
+/* Навигация */
+.home-exercise-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.home-exercise-nav .back-link {
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.home-exercise-nav .back-link:hover {
+  background: rgba(139, 92, 246, 0.4);
+  transform: translateX(-3px);
+}
+
+.home-exercise-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.home-exercise-title .exercise-icon {
+  font-size: 28px;
+}
+
+.home-exercise-title h2 {
+  font-size: 20px;
+  color: #e4e6eb;
+  margin: 0;
+}
+
+.home-exercise-counter {
+  background: rgba(139, 92, 246, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a78bfa;
+  white-space: nowrap;
+}
+
+/* Прогресс бар */
+.home-exercise-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.home-progress-bar.big {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.home-progress-fill {
+  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  height: 100%;
+  transition: width 0.3s;
+  border-radius: 10px;
+}
+
+.home-progress-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #a78bfa;
+  min-width: 45px;
+  text-align: right;
+}
+
+/* Сетка подходов */
+.home-exercise-sets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.home-exercise-set-btn {
+  background: rgba(30, 34, 48, 0.8);
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 15px 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-exercise-set-btn:hover {
+  transform: translateY(-3px);
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.home-exercise-set-btn.completed {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+}
+
+.home-exercise-set-btn.completed .set-number,
+.home-exercise-set-btn.completed .set-status {
+  color: white;
+}
+
+.home-exercise-set-btn.current {
+  border-color: #f59e0b;
+  animation: pulse 1.5s infinite;
+}
+
+.set-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e4e6eb;
+}
+
+.set-status {
+  font-size: 14px;
+  font-weight: bold;
+  color: #a78bfa;
+}
+
+.home-exercise-set-btn.completed .set-status {
+  color: white;
+}
+
+/* Навигационные кнопки */
+.home-exercise-navigation {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.home-nav-prev,
+.home-nav-next {
+  flex: 1;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #a78bfa;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.home-nav-prev:hover:not(.disabled),
+.home-nav-next:hover:not(.disabled) {
+  background: rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.home-nav-prev.disabled,
+.home-nav-next.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.home-reset-btn {
+  flex: 2;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.home-reset-btn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+.home-exercise-completed {
+  flex: 2;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-exercise-nav {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .home-exercise-title {
+    order: 1;
+  }
+
+  .home-exercise-sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 10px;
+  }
+
+  .home-exercise-navigation {
+    flex-wrap: wrap;
+  }
+
+  .home-nav-prev,
+  .home-nav-next,
+  .home-reset-btn,
+  .home-exercise-completed {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-exercise-sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
+  }
+
+  .home-exercise-set-btn {
+    padding: 10px 4px;
+  }
+
+  .set-number {
+    font-size: 14px;
+  }
+
+  .set-status {
+    font-size: 11px;
+  }
+
+  .home-exercise-title h2 {
+    font-size: 16px;
+  }
+}

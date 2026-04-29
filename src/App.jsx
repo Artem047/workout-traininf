@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -7,100 +7,52 @@ import StatsCard from "./components/StatsCard";
 import CategorySection from "./components/CategorySection";
 import AddCategoryForm from "./components/AddCategoryForm";
 import WorkoutCalendar from "./components/WorkoutCalendar";
+import UserSelector from "./components/UserSelector";
+import HomeWorkoutCard from "./components/HomeWorkoutCard";
 import CategoryPage from "./pages/CategoryPage";
 import ExercisePage from "./pages/ExercisePage";
-import { initialWorkoutData, workoutHelpers } from "./data/workoutData";
+import HomeWorkoutPage from "./pages/HomeWorkoutPage";
+import HomeCategoryPage from "./pages/HomeCategoryPage";
+import HomeExercisePage from "./pages/HomeExercisePage";
+import { workoutHelpers } from "./data/workoutData";
+import UserProvider from "./context/UserContext";
+import { useUser } from "./context/UserContext";
 
-const HomePage = ({
-  categories,
-  totalExercises,
-  totalCompleted,
-  completedSets,
-  totalSets,
-  totalProgress,
-  setsProgress,
-  addCategory,
-  deleteCategory,
-  updateCategory,
-  resetAllWorkouts,
-  calendarRefresh,
-}) => (
-  <>
-    {/* Компактная статистика */}
-    <div className="stats-grid">
-      <StatsCard icon="📁" value={categories.length} label="Групп" />
-      <StatsCard icon="🏋️" value={totalExercises} label="Упр." />
-      <StatsCard
-        icon="✅"
-        value={`${totalCompleted}/${totalExercises}`}
-        label="Выполнено"
-      />
-      <StatsCard
-        icon="🎯"
-        value={`${completedSets}/${totalSets}`}
-        label="Подходов"
-      />
-    </div>
-
-    {/* Календарь тренировок */}
-    <WorkoutCalendar categories={categories} refreshTrigger={calendarRefresh} />
-
-    {/* Общий прогресс */}
-    {totalExercises > 0 && (
-      <div className="global-progress">
-        <div className="progress-header">
-          <span>🔥 Общий прогресс тренировки</span>
-          <span>{Math.round(totalProgress)}%</span>
-        </div>
-        <div className="progress-bar-container">
-          <div className="progress-bar" style={{ width: `${totalProgress}%` }}>
-            <div className="progress-glow"></div>
-          </div>
-        </div>
-        <div className="progress-stats">
-          <span>✅ Выполнено упражнений: {totalCompleted}</span>
-          <span>📊 Прогресс подходов: {Math.round(setsProgress)}%</span>
-        </div>
-      </div>
-    )}
-
-    {/* Форма добавления категории */}
-    <AddCategoryForm onAddCategory={addCategory} />
-
-    {/* Список категорий (компактный) */}
-    <div className="categories-container">
-      {categories.length === 0 && (
-        <div className="empty-state">
-          <div className="empty-icon">💪</div>
-          <h3>Создай свою первую группу мышц!</h3>
-          <p>Нажми кнопку выше "➕ Создать группу мышц" чтобы начать</p>
-        </div>
-      )}
-
-      {categories.map((category) => (
-        <CategorySection
-          key={category.id}
-          category={category}
-          onDeleteCategory={deleteCategory}
-          onUpdateCategory={updateCategory}
-        />
-      ))}
-    </div>
-
-    {/* Кнопка полного сброса */}
-    {categories.length > 0 && (
-      <div className="reset-all-section">
-        <button className="btn-reset-all" onClick={resetAllWorkouts}>
-          🔄 Сбросить все тренировки
-        </button>
-      </div>
-    )}
-  </>
-);
-
-const App = () => {
-  const [categories, setCategories] = useState(initialWorkoutData);
+// Компонент главной страницы с выбором пользователя
+const HomePageContent = () => {
+  const { currentUser, currentWorkoutData, selectUser, updateWorkoutData } =
+    useUser();
+  const [categories, setCategories] = useState(null);
   const [calendarRefresh, setCalendarRefresh] = useState(0);
+
+  useEffect(() => {
+    if (currentWorkoutData) {
+      setCategories(currentWorkoutData);
+    }
+  }, [currentWorkoutData]);
+
+  // Если пользователь не выбран - показываем карточку домашней тренировки и выбор пользователя
+  if (!currentUser || !categories) {
+    return (
+      <>
+        <HomeWorkoutCard />
+        <UserSelector onSelectUser={selectUser} selectedUser={currentUser} />
+        <div className="welcome-message">
+          <h2>Добро пожаловать в FitFlow! 💪</h2>
+          <p>Выберите пользователя, чтобы начать индивидуальную тренировку</p>
+        </div>
+      </>
+    );
+  }
+
+  const totalExercises = workoutHelpers.getTotalExercises(categories);
+  const totalCompleted = workoutHelpers.getCompletedExercises(categories);
+  const totalSets = workoutHelpers.getTotalSets(categories);
+  const completedSets = workoutHelpers.getCompletedSets(categories);
+  const totalProgress = totalExercises
+    ? (totalCompleted / totalExercises) * 100
+    : 0;
+  const setsProgress = totalSets ? (completedSets / totalSets) * 100 : 0;
 
   const addCategory = (categoryName, icon, color) => {
     const newCategory = {
@@ -110,84 +62,125 @@ const App = () => {
       color: color,
       exercises: [],
     };
-    setCategories([...categories, newCategory]);
+    const newCategories = [...categories, newCategory];
+    setCategories(newCategories);
+    updateWorkoutData(newCategories);
   };
 
   const deleteCategory = (categoryId) => {
     if (window.confirm("Удалить эту группу мышц со всеми упражнениями?")) {
-      setCategories(categories.filter((cat) => cat.id !== categoryId));
+      const newCategories = categories.filter((cat) => cat.id !== categoryId);
+      setCategories(newCategories);
+      updateWorkoutData(newCategories);
     }
   };
 
   const updateCategory = (categoryId, updatedCategory) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((cat) =>
-        cat.id === categoryId ? updatedCategory : cat,
-      ),
+    const newCategories = categories.map((cat) =>
+      cat.id === categoryId ? updatedCategory : cat,
     );
+    setCategories(newCategories);
+    updateWorkoutData(newCategories);
   };
 
-  const totalExercises = workoutHelpers.getTotalExercises(categories);
-  const totalCompleted = workoutHelpers.getCompletedExercises(categories);
-  const totalSets = workoutHelpers.getTotalSets(categories);
-  const completedSets = workoutHelpers.getCompletedSets(categories);
-
-  const totalProgress = totalExercises
-    ? (totalCompleted / totalExercises) * 100
-    : 0;
-  const setsProgress = totalSets ? (completedSets / totalSets) * 100 : 0;
-
   const resetAllWorkouts = () => {
-    if (
-      window.confirm("Сбросить все тренировки? Весь прогресс будет потерян!")
-    ) {
-      const resetData = JSON.parse(JSON.stringify(initialWorkoutData));
+    if (window.confirm(`Сбросить все тренировки для ${currentUser.name}?`)) {
+      const { getUserWorkoutData } = require("./data/workoutData");
+      const resetData = JSON.parse(
+        JSON.stringify(getUserWorkoutData(currentUser.id)),
+      );
       setCategories(resetData);
+      updateWorkoutData(resetData);
     }
   };
 
-  // Функция для обновления календаря
   const refreshCalendar = () => {
     setCalendarRefresh((prev) => prev + 1);
   };
 
   return (
-    <Router>
-      <div className="app">
-        <div className="bg-gradient"></div>
-        <div className="container">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <HomePage
-                  categories={categories}
-                  totalExercises={totalExercises}
-                  totalCompleted={totalCompleted}
-                  completedSets={completedSets}
-                  totalSets={totalSets}
-                  totalProgress={totalProgress}
-                  setsProgress={setsProgress}
-                  addCategory={addCategory}
-                  deleteCategory={deleteCategory}
-                  updateCategory={updateCategory}
-                  resetAllWorkouts={resetAllWorkouts}
-                  calendarRefresh={calendarRefresh}
-                />
-              }
-            />
-            <Route
-              path="/category/:categoryId"
-              element={<CategoryPage refreshCalendar={refreshCalendar} />}
-            />
-            <Route
-              path="/exercise/:categoryId/:exerciseId"
-              element={<ExercisePage refreshCalendar={refreshCalendar} />}
-            />
-          </Routes>
+    <>
+      <div className="user-info-header">
+        <div className="user-greeting">
+          <span className="user-greeting-icon">{currentUser.icon}</span>
+          <span className="user-greeting-name">
+            Привет, {currentUser.name}!
+          </span>
         </div>
+        <button
+          className="switch-user-btn"
+          onClick={() => window.location.reload()}
+        >
+          🔄 Сменить пользователя
+        </button>
       </div>
-    </Router>
+
+      <div className="categories-container">
+        {categories.length === 0 && (
+          <div className="empty-state">
+            <div className="empty-icon">💪</div>
+            <h3>Создай свою первую группу мышц!</h3>
+            <p>Нажми кнопку ниже "➕ Создать группу" чтобы начать</p>
+          </div>
+        )}
+
+        {categories.map((category) => (
+          <CategorySection
+            key={category.id}
+            category={category}
+            onDeleteCategory={deleteCategory}
+            onUpdateCategory={updateCategory}
+          />
+        ))}
+      </div>
+
+      <div className="add-category-wrapper">
+        <button className="btn-add-category" onClick={addCategory}>
+          ➕ Создать группу мышц
+        </button>
+      </div>
+
+      {categories.length > 0 && (
+        <div className="reset-all-section">
+          <button className="btn-reset-all" onClick={resetAllWorkouts}>
+            🔄 Сбросить все тренировки
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
+// Основной компонент App
+const App = () => {
+  return (
+    <UserProvider>
+      <Router>
+        <div className="app">
+          <div className="bg-gradient"></div>
+          <div className="container">
+            {/* <Header /> */}
+            <Routes>
+              <Route path="/" element={<HomePageContent />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
+              <Route
+                path="/exercise/:categoryId/:exerciseId"
+                element={<ExercisePage />}
+              />
+              <Route path="/home-workout" element={<HomeWorkoutPage />} />
+              <Route
+                path="/home-category/:categoryId"
+                element={<HomeCategoryPage />}
+              />
+              <Route
+                path="/home-exercise/:categoryId/:exerciseId"
+                element={<HomeExercisePage />}
+              />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </UserProvider>
   );
 };
 

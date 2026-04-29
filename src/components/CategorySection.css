@@ -1,37 +1,39 @@
 /* src/components/CategorySection.css */
 
 .category-section-compact {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
 .category-card {
   background: rgba(30, 34, 48, 0.8);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border-left: 4px solid;
-  padding: 10px 14px;
+  border-radius: 20px; /* Увеличиваем скругление */
+  border-left: 6px solid; /* Увеличиваем толщину полоски */
+  padding: 20px 24px; /* Увеличиваем отступы */
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-  gap: 12px;
+  gap: 20px;
 }
 
 .category-card:hover {
-  transform: translateX(4px);
+  transform: translateX(8px);
   background: rgba(30, 34, 48, 0.95);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Левая часть */
+/* Левая часть - иконка и название */
 .category-card-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   flex: 2;
 }
 
 .category-card-icon {
-  font-size: 28px;
+  font-size: 48px; /* Увеличиваем иконку */
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
 }
 
@@ -40,45 +42,45 @@
 }
 
 .category-card-name {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 22px; /* Увеличиваем шрифт названия */
+  font-weight: 700;
   color: #e4e6eb;
-  margin: 0 0 3px 0;
+  margin: 0 0 8px 0;
 }
 
 .category-card-stats {
   display: flex;
-  gap: 10px;
-  font-size: 10px;
+  gap: 20px;
+  font-size: 13px; /* Увеличиваем шрифт статистики */
   color: #9ca3af;
 }
 
 .category-card-stats span {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
 }
 
-/* Правая часть */
+/* Правая часть - прогресс и кнопки */
 .category-card-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   flex: 1;
 }
 
 .category-card-progress {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex: 1;
 }
 
 .compact-progress-bar {
   flex: 1;
   background: rgba(0, 0, 0, 0.4);
-  border-radius: 6px;
-  height: 6px;
+  border-radius: 10px;
+  height: 10px; /* Увеличиваем высоту прогресс-бара */
   overflow: hidden;
 }
 
@@ -86,21 +88,21 @@
   background: linear-gradient(90deg, #a78bfa, #60a5fa);
   height: 100%;
   transition: width 0.3s;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 .progress-percent {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 14px; /* Увеличиваем шрифт процента */
+  font-weight: 700;
   color: #a78bfa;
-  min-width: 38px;
+  min-width: 45px;
   text-align: right;
 }
 
 /* Кнопки действий */
 .category-card-actions {
   display: flex;
-  gap: 6px;
+  gap: 10px;
 }
 
 .compact-edit-btn,
@@ -108,11 +110,11 @@
   background: rgba(139, 92, 246, 0.2);
   border: 1px solid rgba(139, 92, 246, 0.4);
   color: #a78bfa;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
+  width: 36px; /* Увеличиваем кнопки */
+  height: 36px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 16px;
   transition: all 0.3s;
   display: flex;
   align-items: center;
@@ -138,90 +140,13 @@
   background: rgba(239, 68, 68, 0.4);
 }
 
-/* Форма редактирования */
-.compact-edit-form {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.compact-edit-input {
-  flex: 2;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #e4e6eb;
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: inherit;
-}
-
-.compact-edit-input:focus {
-  outline: none;
-  border-color: #a78bfa;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.compact-edit-select {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #e4e6eb;
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.compact-edit-select:focus {
-  outline: none;
-  border-color: #a78bfa;
-}
-
-.compact-edit-color {
-  width: 45px;
-  height: 32px;
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.compact-save-btn,
-.compact-cancel-btn {
-  background: rgba(34, 197, 94, 0.2);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #4ade80;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.compact-cancel-btn {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #f87171;
-}
-
-.compact-save-btn:hover,
-.compact-cancel-btn:hover {
-  transform: scale(1.05);
-}
-
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
   .category-card {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
-    padding: 10px 12px;
+    gap: 15px;
+    padding: 16px 20px;
   }
 
   .category-card-left {
@@ -232,46 +157,42 @@
     justify-content: space-between;
   }
 
-  .compact-edit-form {
-    flex-direction: column;
+  .category-card-icon {
+    font-size: 40px;
   }
 
-  .compact-edit-input,
-  .compact-edit-select,
-  .compact-edit-color,
-  .compact-save-btn,
-  .compact-cancel-btn {
-    width: 100%;
+  .category-card-name {
+    font-size: 18px;
+  }
+
+  .compact-edit-btn,
+  .compact-delete-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
   .category-card {
-    padding: 8px 10px;
+    padding: 14px 16px;
   }
 
   .category-card-icon {
-    font-size: 24px;
+    font-size: 36px;
   }
 
   .category-card-name {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .category-card-stats {
-    font-size: 9px;
-    gap: 6px;
+    font-size: 11px;
+    gap: 12px;
   }
 
   .progress-percent {
-    font-size: 10px;
-    min-width: 32px;
-  }
-
-  .compact-edit-btn,
-  .compact-delete-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 11px;
+    font-size: 12px;
+    min-width: 38px;
   }
 }

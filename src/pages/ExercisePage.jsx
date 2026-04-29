@@ -1,12 +1,13 @@
 // src/pages/ExercisePage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { initialWorkoutData } from "../data/workoutData";
+import { useUser } from "../context/UserContext";
 import "./ExercisePage.css";
 
 const ExercisePage = () => {
   const { categoryId, exerciseId } = useParams();
   const navigate = useNavigate();
+  const { currentWorkoutData, updateWorkoutData } = useUser();
 
   const [showMedia, setShowMedia] = useState(true);
   const [currentExercise, setCurrentExercise] = useState(null);
@@ -19,7 +20,12 @@ const ExercisePage = () => {
   const [groupProgress, setGroupProgress] = useState(0);
 
   useEffect(() => {
-    const foundCategory = initialWorkoutData.find(
+    if (!currentWorkoutData) {
+      navigate("/");
+      return;
+    }
+
+    const foundCategory = currentWorkoutData.find(
       (cat) => cat.id === categoryId,
     );
 
@@ -28,25 +34,7 @@ const ExercisePage = () => {
       return;
     }
 
-    const saved = localStorage.getItem("workout-categories");
-    let savedCategory = null;
-
-    if (saved) {
-      const allSaved = JSON.parse(saved);
-      savedCategory = allSaved.find((cat) => cat.id === categoryId);
-    }
-
-    const categoryWithProgress = {
-      ...foundCategory,
-      exercises: foundCategory.exercises.map((exercise) => {
-        const savedExercise = savedCategory?.exercises.find(
-          (ex) => ex.id === exercise.id,
-        );
-        return savedExercise ? { ...exercise, ...savedExercise } : exercise;
-      }),
-    };
-
-    const index = categoryWithProgress.exercises.findIndex(
+    const index = foundCategory.exercises.findIndex(
       (ex) => ex.id === parseInt(exerciseId),
     );
 
@@ -55,29 +43,24 @@ const ExercisePage = () => {
       return;
     }
 
-    setCategory(categoryWithProgress);
-    setCurrentExercise(categoryWithProgress.exercises[index]);
+    setCategory(foundCategory);
+    setCurrentExercise(foundCategory.exercises[index]);
     setCurrentIndex(index);
     setHasPrev(index > 0);
-    setHasNext(index < categoryWithProgress.exercises.length - 1);
+    setHasNext(index < foundCategory.exercises.length - 1);
 
-    const completed = categoryWithProgress.exercises.filter(
+    const completed = foundCategory.exercises.filter(
       (ex) => ex.completed,
     ).length;
     setCompletedExercisesCount(completed);
-    setTotalExercisesCount(categoryWithProgress.exercises.length);
-    setGroupProgress((completed / categoryWithProgress.exercises.length) * 100);
-  }, [categoryId, exerciseId, navigate]);
+    setTotalExercisesCount(foundCategory.exercises.length);
+    setGroupProgress((completed / foundCategory.exercises.length) * 100);
+  }, [categoryId, exerciseId, navigate, currentWorkoutData]);
 
   const updateExerciseInGlobalState = (updatedExercise) => {
-    const saved = localStorage.getItem("workout-categories");
-    let allCategories = saved ? JSON.parse(saved) : [];
+    if (!currentWorkoutData) return;
 
-    if (allCategories.length === 0) {
-      allCategories = JSON.parse(JSON.stringify(initialWorkoutData));
-    }
-
-    const updatedCategories = allCategories.map((cat) => {
+    const updatedCategories = currentWorkoutData.map((cat) => {
       if (cat.id === categoryId) {
         return {
           ...cat,
@@ -89,10 +72,7 @@ const ExercisePage = () => {
       return cat;
     });
 
-    localStorage.setItem(
-      "workout-categories",
-      JSON.stringify(updatedCategories),
-    );
+    updateWorkoutData(updatedCategories);
     setCurrentExercise(updatedExercise);
 
     const updatedCategory = updatedCategories.find(
@@ -141,31 +121,6 @@ const ExercisePage = () => {
     if (hasNext && category) {
       const nextExercise = category.exercises[currentIndex + 1];
       navigate(`/exercise/${categoryId}/${nextExercise.id}`);
-    }
-  };
-
-  const markWorkoutInCalendar = () => {
-    const today = new Date().toISOString().split("T")[0];
-    const saved = localStorage.getItem("workout-history");
-    let history = saved ? JSON.parse(saved) : {};
-
-    if (!history[today]) {
-      history[today] = [];
-    }
-
-    const alreadyMarked = history[today].some((w) => w.id === categoryId);
-
-    if (!alreadyMarked) {
-      history[today].push({
-        id: categoryId,
-        name: category.name,
-        icon: category.icon,
-        timestamp: new Date().toISOString(),
-      });
-      localStorage.setItem("workout-history", JSON.stringify(history));
-      alert(`✅ Тренировка "${category.name}" отмечена в календаре!`);
-    } else {
-      alert(`⚠️ Тренировка "${category.name}" уже отмечена сегодня!`);
     }
   };
 
@@ -330,9 +285,6 @@ const ExercisePage = () => {
         <div className="group-complete-message">
           <span>🏆</span> Поздравляю! Все упражнения в группе "{category.name}"
           выполнены!
-          <button onClick={markWorkoutInCalendar} className="mark-complete-btn">
-            📅 Отметить в календаре
-          </button>
           <Link to="/" className="home-link">
             🏠 На главную
           </Link>
